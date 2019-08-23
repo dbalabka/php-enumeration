@@ -1,16 +1,18 @@
 # PHP Enumeration classes
 Implementation of [Enumeration Classes](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types) in PHP. 
 
-In contrast to [existing solutions](#existing-solutions) this implementation avoid usage of [Magic methods](https://www.php.net/manual/en/language.oop5.magic.php) and 
+In contrast to [existing solutions](#existing-solutions), this implementation avoids usage of [Magic methods](https://www.php.net/manual/en/language.oop5.magic.php) and 
 [Reflection](https://www.php.net/manual/en/book.reflection.php) to provide better performance and code autocompletion.
-Also, we use static properties that can utilize the power of [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2).
+Enumeration class holds reference to single Enum element represented as a object (singleton) to provide possiblity 
+to use strict (`===`) comparision between the values.
+Also, it uses static properties that can utilize the power of [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2).
 The Enumeration Classes is much closer to other language implementations like [Java Enums](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) 
 and [Python Enums](https://docs.python.org/3/library/enum.html).
  
 
 ## Declaration
 
-Basic way to declare named Enumeration class:
+A basic way to declare named Enumeration class:
 ```php
 <?php
 use Dbalabka\Enumeration;
@@ -24,7 +26,7 @@ final class Action extends Enumeration
 Action::initialize();
 ```
 
-with Typed Properties support:
+Declaration with Typed Properties support:
 ```php
 <?php
 final class Day extends Enumeration
@@ -114,15 +116,16 @@ By default enumeration class does not require the value to be provided. You can 
     ```
  
 Declaration rules that developer should follow:
-1. You should always declare the Enum resulting enum class as `final`. 
+1. The resulting Enumeration class should be marked as `final`. Abstract classes should be used to share functional between
+multiple Enumeration classes.
    > ...Allowing subclassing of enums that define members would lead to a violation of some important invariants of types and instances. 
    > On the other hand, it makes sense to allow sharing some common behavior between a group of enumerations...
    > (from [Python Enum documentation](https://docs.python.org/3/library/enum.html#restricted-enum-subclassing))
 2. Constructor should always be declared as non-public (`private` or `protected`) to avoid unwanted class instantiation.
 3. Implementation is based on assumption that all class static properties are elements of Enum. If there is a need to declare
-any static property that isn't Enum element than you should override that `\Dbalabka\Enumeration::getStaticVars`.
-4. You must call `Dbalabka\Enumeration::initialize()` after each Enumeration class declaration or use 
-[vladimmi/construct-static](https://github.com/vladimmi/construct-static) custom loader
+any static property that isn't Enum element than you should override `\Dbalabka\Enumeration::getStaticVars()` method.
+4. Method `Dbalabka\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use 
+[vladimmi/construct-static](https://github.com/vladimmi/construct-static) custom loader to avoid boilerplate code.
 
 ## Usage
 ```php
@@ -156,7 +159,7 @@ Action::$view = null;
 
 ### Class static initialization 
 Implementation rely on class static initialization which was proposed in [Static Class Constructor](https://wiki.php.net/rfc/static_class_constructor).
-RFC describes the possible workarounds. Simplest is to call initialization method right after class declaration, 
+RFC describes the possible workarounds. The simplest way is to call initialization method right after class declaration, 
 but it requires keep this in mind. Thanks to [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2)
 we can control not initialized properties - PHP will throw and error in case of access to not initialized property.
 It might be automated with custom autoloader implemented in [vladimmi/construct-static](https://github.com/vladimmi/construct-static) library.

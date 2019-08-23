@@ -1,0 +1,36 @@
+{
+    "name": "dbalabka/php-enumeration",
+    "description": "Implementation of enumeration classes in PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitry Balabka",
+            "email": "dmitry.balabka@gmail.com"
+        }
+    ],
+    "repositories": [{"type": "vcs", "url": "https://github.com/dbalabka/construct-static.git"}],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "vladimmi/construct-static": "dev-master",
+        "myclabs/php-enum": "^1.0",
+        "phpunit/phpunit": "^8.3",
+        "phpbench/phpbench": "^0.16.9"
+    },
+    "suggest": {
+        "vladimmi/construct-static": "Allows to call __constructStatic on class load"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dbalabka\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dbalabka\\Examples\\": "examples",
+            "Dbalabka\\Tests\\": "tests"
+        }
+    }
+}

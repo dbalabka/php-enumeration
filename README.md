@@ -172,21 +172,37 @@ Action::initialize();
 See [examples/class_static_construct.php](examples/class_static_construct.php) for example to overcome this limitation. 
 
 ### Serialization
-There no possibility to serialize the singleton. As a result, we have to restrict direct Enum object serialization. 
-[New custom object serialization mechanism](https://wiki.php.net/rfc/custom_object_serialization) does not help with direct Enum serialization
-but it give the possibility to control this in class which hold the reference to Enums instances. Also, it can be workaround
-with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in similar way. So this problem somehow
-solves with worse developer experience. [TODO: clarify] Probably, [similar to Java Enums](https://stackoverflow.com/questions/15521309/is-custom-enum-serializable-too) 
-the PHP Enums should not be serializable at all. The only way to serialize the Enum is to obtain the name of Enum constant
-and use valueOf() method to obtain the Enum constant.
+There no possibility to serialize the singleton. As a result, we have to restrict direct Enum object serialization.
 ```php
 <?php
 // Following line will throw an exception
 serialize(Action::$view);
 ```
-See [examples/serialization_php74.php](examples/serialization_php74.php) to overcome this limitation. 
-It is possible to submit RFC to implement singleton serialization in PHP. For example [Java Enums](https://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html)
+[New custom object serialization mechanism](https://wiki.php.net/rfc/custom_object_serialization) does not help with singleton serialization
+but it give the possibility to control this in class which hold the reference to Enums instances. Also, it can be workaround
+with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in similar way.
+[Similar to Java Enums](https://stackoverflow.com/a/15522276/983577) 
+the PHP Enumeration Class serialized differently. For example [Java Enums](https://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html)
 implements Serializable interface and replace class instance during unserialization in [readResolve()](https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html) method. 
+In PHP, serialize the name of Enum constant and use valueOf() method to obtain the Enum constant value during unserialization. 
+So this problem somehow solves with worse developer experience. Hope it will be solved in in future RFCs. 
+```php
+class SomeClass
+{
+    public Action $action;
+
+    public function __serialize()
+    {
+        return ['action' => $this->action->name()];
+    }
+
+    public function __unserialize($payload)
+    {
+        $this->action = Action::valueOf($payload['action']);
+    }
+}
+``` 
+See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
 
 ## Existing solutions
 In contrast to existing solutions and RFCs like

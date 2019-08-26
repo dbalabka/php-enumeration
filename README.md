@@ -205,7 +205,6 @@ class SomeClass
 See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
 
 ## Existing solutions
-In contrast to existing solutions and RFCs like
 * https://github.com/myclabs/php-enum
 * https://github.com/marc-mabe/php-enum
 * https://www.php.net/manual/en/class.splenum.php

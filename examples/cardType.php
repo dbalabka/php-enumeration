@@ -5,7 +5,7 @@ use Dbalabka\Enumeration;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-final class CartType extends Enumeration {
+final class CardType extends Enumeration {
     public static $amex;
     public static $visa;
     public static $masterCard;
@@ -17,36 +17,36 @@ final class CartType extends Enumeration {
         self::$masterCard  = new self();
     }
 }
-CartType::initialize();
+CardType::initialize();
 
-var_dump(CartType::values());
+var_dump(CardType::values());
 
 
-class Cart
+class Card
 {
     private $type;
 
-    public function __construct(CartType $type)
+    public function __construct(CardType $type)
     {
         $this->type = $type;
     }
 }
 
-$cart = new Cart(CartType::$amex);
-var_dump(CartType::$amex === CartType::$visa);
-var_dump(CartType::$amex === CartType::$amex);
+$card = new Card(CardType::$amex);
+var_dump(CardType::$amex === CardType::$visa);
+var_dump(CardType::$amex === CardType::$amex);
 
-foreach (CartType::values() as $type) {
+foreach (CardType::values() as $type) {
     echo $type . "\n";
 }
 
-$a = CartType::$visa;
+$a = CardType::$visa;
 switch ($a) {
-    case CartType::$amex:
-        echo 'It is ' . CartType::$amex . PHP_EOL;
+    case CardType::$amex:
+        echo 'It is ' . CardType::$amex . PHP_EOL;
         break;
-    case CartType::$visa:
-        echo 'It is ' . CartType::$visa . PHP_EOL;
+    case CardType::$visa:
+        echo 'It is ' . CardType::$visa . PHP_EOL;
         break;
 }
 

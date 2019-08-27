@@ -3,16 +3,16 @@ Implementation of [Enumeration Classes](https://docs.microsoft.com/en-us/dotnet/
 
 In contrast to [existing solutions](#existing-solutions), this implementation avoids usage of [Magic methods](https://www.php.net/manual/en/language.oop5.magic.php) and 
 [Reflection](https://www.php.net/manual/en/book.reflection.php) to provide better performance and code autocompletion.
-Enumeration class holds reference to single Enum element represented as a object (singleton) to provide possiblity 
+The Enumeration class holds a reference to a single Enum element represented as an object (singleton) to provide the possiblity 
 to use strict (`===`) comparision between the values.
 Also, it uses static properties that can utilize the power of [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2).
-The Enumeration Classes is much closer to other language implementations like [Java Enums](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) 
+The Enumeration Classes are much closer to other language implementations like [Java Enums](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) 
 and [Python Enums](https://docs.python.org/3/library/enum.html).
  
 
 ## Declaration
 
-A basic way to declare named Enumeration class:
+A basic way to declare a named Enumeration class:
 ```php
 <?php
 use Dbalabka\Enumeration;
@@ -22,7 +22,7 @@ final class Action extends Enumeration
     public static $view;
     public static $edit;
 }
-// to avoid manual initialization you can setup "vladimmi/construct-static" custom loader
+// to avoid manual initialization you can setup the "vladimmi/construct-static" custom loader
 Action::initialize();
 ```
 
@@ -42,7 +42,7 @@ final class Day extends Enumeration
 Day::initialize();
 ```
 
-By default enumeration class does not require the value to be provided. You can use constructor to set any types of values.
+By default an enumeration class does not require the value to be provided. You can use the constructor to set any types of values.
 1. Flag enum implementation example: 
     ```php
     <?php
@@ -115,16 +115,16 @@ By default enumeration class does not require the value to be provided. You can 
     }
     ```
  
-Declaration rules that developer should follow:
-1. The resulting Enumeration class should be marked as `final`. Abstract classes should be used to share functional between
+Declaration rules that the developer should follow:
+1. The resulting Enumeration class should be marked as `final`. Abstract classes should be used to share functionality between
 multiple Enumeration classes.
    > ...Allowing subclassing of enums that define members would lead to a violation of some important invariants of types and instances. 
    > On the other hand, it makes sense to allow sharing some common behavior between a group of enumerations...
    > (from [Python Enum documentation](https://docs.python.org/3/library/enum.html#restricted-enum-subclassing))
 2. Constructor should always be declared as non-public (`private` or `protected`) to avoid unwanted class instantiation.
 3. Implementation is based on assumption that all class static properties are elements of Enum. If there is a need to declare
-any static property that isn't Enum element than you should override `\Dbalabka\Enumeration::getStaticVars()` method.
-4. Method `Dbalabka\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use 
+any static property that isn't an Enum element then you should override the `\Dbalabka\Enumeration::getStaticVars()` method.
+4. The method `Dbalabka\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use the 
 [vladimmi/construct-static](https://github.com/vladimmi/construct-static) custom loader to avoid boilerplate code.
 
 ## Usage
@@ -146,9 +146,9 @@ foreach (Action::values() as $name => $action) {
 
 ## Known issues
 ### Readonly Properties
-In the current implementation, static property value might be occasionally replaced. 
+In the current implementation, static property value can be occasionally replaced. 
 [Readonly Properties](https://wiki.php.net/rfc/readonly_properties) is aimed to solve this issue.
-In ideal world Enum values should be declared as a constants. Unfortunately, it is not possible in PHP right now.
+In an ideal world Enum values should be declared as a constants. Unfortunately, it is not possible in PHP right now.
 ```php
 <?php
 // It is possible but don't do it
@@ -158,34 +158,32 @@ Action::$view = null;
 ```
 
 ### Class static initialization 
-Implementation rely on class static initialization which was proposed in [Static Class Constructor](https://wiki.php.net/rfc/static_class_constructor).
-RFC describes the possible workarounds. The simplest way is to call initialization method right after class declaration, 
-but it requires keep this in mind. Thanks to [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2)
-we can control not initialized properties - PHP will throw and error in case of access to not initialized property.
+This implementation relies on class static initialization which was proposed in [Static Class Constructor](https://wiki.php.net/rfc/static_class_constructor).
+The RFC describes possible workarounds. The simplest way is to call the initialization method right after class declaration, 
+but it requires the developer to keep this in mind. Thanks to [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2)
+we can control uninitialized properties - PHP will throw and error in case of access to an uninitialized property.
 It might be automated with custom autoloader implemented in [vladimmi/construct-static](https://github.com/vladimmi/construct-static) library.
 ```php
 <?php
-// You should always call initialize() method right after class declaration
-// To avoid manual initialization you can setup "vladimmi/construct-static" custom loader
+// You should always call the initialize() method right after class declaration
+// To avoid manual initialization you can setup the "vladimmi/construct-static" custom loader
 Action::initialize();
 ```
 See [examples/class_static_construct.php](examples/class_static_construct.php) for example to overcome this limitation. 
 
 ### Serialization
-There no possibility to serialize the singleton. As a result, we have to restrict direct Enum object serialization.
+There is no possibility to serialize the singleton. As a result, we have to restrict direct Enum object serialization.
 ```php
 <?php
-// Following line will throw an exception
+// The following line will throw an exception
 serialize(Action::$view);
 ```
 [New custom object serialization mechanism](https://wiki.php.net/rfc/custom_object_serialization) does not help with singleton serialization
-but it give the possibility to control this in class which hold the reference to Enums instances. Also, it can be workaround
-with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in similar way.
-[Similar to Java Enums](https://stackoverflow.com/a/15522276/983577) 
-the PHP Enumeration Class serialized differently. For example [Java Enums](https://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html)
-implements Serializable interface and replace class instance during unserialization in [readResolve()](https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html) method. 
-In PHP, serialize the name of Enum constant and use valueOf() method to obtain the Enum constant value during unserialization. 
-So this problem somehow solves with worse developer experience. Hope it will be solved in in future RFCs. 
+but it gives the possibility to control this in the class which holds the references to Enum instances. Also, it can be worked around
+with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in a similar way.
+For example, Java [handles](https://stackoverflow.com/questions/15521309/is-custom-enum-serializable-too/15522276#15522276) Enums serialization differently than other classes, but you can serialize it directly thanks to [readResolve()](https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html).
+In PHP, we can't serialize Enums directly, but we can handle Enums serialization in class that holds the reference. We can serialize the name of the Enum constant and use `valueOf()` method to obtain the Enum constant value during unserialization. 
+So this problem somewhat resolved a the cost of a worse developer experience. Hope it will be solved in future RFCs.
 ```php
 class SomeClass
 {
@@ -205,13 +203,12 @@ class SomeClass
 See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
 
 ## Existing solutions
-In contrast to existing solutions and RFCs like
 * https://github.com/myclabs/php-enum
 * https://github.com/marc-mabe/php-enum
 * https://www.php.net/manual/en/class.splenum.php
 * [PHP RFC: Enumerated Types](https://wiki.php.net/rfc/enum)
 
-(there a lot of [other PHP implementations](https://packagist.org/search/?query=php-enum))
+(there are a lot of [other PHP implementations](https://packagist.org/search/?query=php-enum))
 
 ## References
 * [Enum Types](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) - The Java™ Tutorials

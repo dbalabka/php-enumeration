@@ -133,14 +133,16 @@ any static property that isn't an Enum element then you should override the `\Db
 $viewAction = Action::$view;
 
 // it is possible to compare Enum elements
-var_dump($viewAction === Action::$view);
+assert($viewAction === Action::$view);
 
 // you can get Enum element by name 
 $editAction = Action::valueOf('edit');
+assert($editAction === Action::$edit);
 
 // iterate over all Enum elements
 foreach (Action::values() as $name => $action) {
-    echo $action;
+    assert($action instanceof Action);
+    assert($name === (string) $action);
 }
 ```
 

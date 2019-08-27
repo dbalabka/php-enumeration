@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Examples\Fixtures;
+namespace Dbalabka\Examples\Enum;
 
 use Dbalabka\Enumeration;
 

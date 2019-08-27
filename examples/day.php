@@ -4,7 +4,8 @@ declare(strict_types=1);
 use Dbalabka\Examples\Enum\Day;
 
 if (version_compare(PHP_VERSION, '7.4.0', '<')) {
-    throw new \Exception('This code requires PHP >= 7.4');
+    trigger_error('This code requires PHP >= 7.4', E_USER_NOTICE);
+    return;
 }
 
 $composer = require_once(__DIR__ . '/../vendor/autoload.php');

@@ -1,15 +1,19 @@
 <?php
 declare(strict_types=1);
 
-use Dbalabka\Examples\Fixtures\Day;
+use Dbalabka\Examples\Enum\Day;
+
+if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+    trigger_error('This code requires PHP >= 7.4', E_USER_NOTICE);
+    return;
+}
 
 $composer = require_once(__DIR__ . '/../vendor/autoload.php');
 $loader = new ConstructStatic\Loader($composer);
 
-
 class EnumTest
 {
-    private Day $day;
+    private $day;
 
     public function __construct(Day $day) {
         $this->day = $day;

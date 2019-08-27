@@ -1,43 +1,20 @@
 <?php
 declare(strict_types=1);
 
-use Dbalabka\Enumeration;
+use Dbalabka\Examples\Enum\Flag;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-final class Flag extends Enumeration
-{
-    public static $red;
-    public static $blue;
-    public static $green;
+assert(Flag::$noState < Flag::$ok);
+assert(Flag::$noState < Flag::$notOk);
+assert(Flag::$noState < Flag::$unavailable);
+assert(Flag::$ok < Flag::$notOk);
+assert(Flag::$ok < Flag::$unavailable);
+assert(Flag::$notOk < Flag::$unavailable);
 
-    protected static function initializeValues(): void
-    {
-        self::$red = new self(1);
-        self::$blue = new self(2);
-        self::$green = new self(4);
-    }
-}
-Flag::initialize();
-
-var_dump(Flag::values());
-
-$red = Flag::$red;
-$green = Flag::$green;
-var_dump('a', Flag::$red < Flag::$green);
-
+set_error_handler(function ($errno, $errstr) {
+    assert($errstr === sprintf('Object of class %s could not be converted to int', Flag::class));
+});
 // Operators overloading is not supported by PHP (see https://wiki.php.net/rfc/operator-overloading)
-var_dump('b', Flag::$red & Flag::$green);
-
-try {
-    var_dump('c', $red() & $green());
-} catch (\Throwable $e) {
-    echo 'Error: ' . $e->getMessage();
-}
-var_dump('d', 1 & 2);
-
-try {
-    var_dump('e', (Flag::$red)() & (Flag::$green)());
-} catch (\Throwable $e) {
-    echo 'Error: ' . $e->getMessage();
-}
+assert(1 === (Flag::$notOk & Flag::$unavailable));
+restore_error_handler();

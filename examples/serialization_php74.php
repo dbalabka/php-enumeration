@@ -1,35 +1,20 @@
 <?php
 declare(strict_types=1);
 
-use Dbalabka\Enumeration;
+use Dbalabka\EnumerationException;
+use Dbalabka\Examples\Enum\Color;
 
-require_once(__DIR__ . '/../vendor/autoload.php');
-
-final class Color extends Enumeration
-{
-    public static Color $red;
-    public static Color $green;
-    public static Color $blue;
-
-    private int $value;
-
-    public function __construct(int $value)
-    {
-        $this->value = $value;
-    }
-
-    protected static function initializeValues(): void
-    {
-        self::$red = new self(1);
-        self::$blue = new self(2);
-        self::$green = new self(3);
-    }
+if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+    trigger_error('This code requires PHP >= 7.4', E_USER_NOTICE);
+    return;
 }
-Color::initialize();
+
+$composer = require_once(__DIR__ . '/../vendor/autoload.php');
+$loader = new ConstructStatic\Loader($composer);
 
 class Square implements Serializable
 {
-    public Color $color;
+    public $color;
 
     public function __construct(Color $color)
     {
@@ -52,20 +37,20 @@ $square = new Square(Color::$red);
 $red = Color::$red;
 try {
     $serialized = serialize($red);
-} catch (\Dbalabka\EnumerationException $e) {
-    echo 'Error: ' . $e->getMessage() . PHP_EOL;
+} catch (EnumerationException $e) {
+    assert($e->getMessage() === 'Enum serialization is not allowed');
 }
 
 
 $serializedSquare = serialize($square);
 $square = unserialize($serializedSquare);
 
-var_dump($square->color === Color::$red);
+assert($square->color === Color::$red);
 
 
 class Dot
 {
-    public Color $color;
+    public $color;
 
     public function __construct(Color $color)
     {
@@ -87,4 +72,4 @@ $dot = new Dot(Color::$red);
 $serializedDot = serialize($dot);
 $dot = unserialize($serializedDot);
 
-var_dump($dot->color === Color::$red);
+assert($dot->color === Color::$red);

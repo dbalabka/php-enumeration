@@ -1,19 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Tests\Fixtures;
+namespace Dbalabka\Examples\Enum;
 
 use Dbalabka\Enumeration;
-use const PHP_VERSION_ID;
 
-if (PHP_VERSION_ID >= 70400) {
-    require_once __DIR__ . '/FlagTypedProperties.php';
-} else {
-    require_once __DIR__ . '/FlagProperties.php';
-}
 final class Flag extends Enumeration
 {
-    use FlagProperties;
+    public static $noState;
+    public static $ok;
+    public static $notOk;
+    public static $unavailable;
 
     private $flagValue;
 
@@ -27,3 +24,4 @@ final class Flag extends Enumeration
         return $this->flagValue;
     }
 }
+Flag::initialize();

@@ -1,0 +1,36 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: '7.1'
+    - php: '7.2'
+    - php: '7.3'
+    - php: '7.4snapshot'
+
+before_install:
+  - phpenv config-rm xdebug.ini || echo "No xdebug config."
+
+install:
+  - composer update --prefer-dist --no-interaction
+
+  - mkdir -p coverage/cov coverage/bin
+  - wget https://phar.phpunit.de/phpcov.phar -O coverage/bin/phpcov
+  - chmod +x coverage/bin/phpcov
+
+script:
+  - phpdbg -qrr vendor/bin/phpunit --coverage-php coverage/cov/main.cov
+
+  - php examples/card_type.php
+  - php examples/class_static_construct.php
+  - php examples/day.php
+  - php examples/flag.php
+  - php examples/php-enum_comparision.php
+  - php examples/planet.php
+  - php examples/serialization_php74.php
+
+after_script:
+  - curl -OL https://github.com/php-coveralls/php-coveralls/releases/download/v1.0.0/coveralls.phar
+  - chmod +x coveralls.phar
+  - phpdbg -qrr coverage/bin/phpcov merge --clover build/logs/clover.xml coverage/cov
+  - ./coveralls.phar

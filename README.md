@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/dbalabka/php-enumeration.svg?branch=master)](https://travis-ci.org/dbalabka/php-enumeration)
 [![Coverage Status](https://coveralls.io/repos/github/dbalabka/php-enumeration/badge.svg)](https://coveralls.io/github/dbalabka/php-enumeration)
 
-Implementation of [Enumeration Classes](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types) in PHP. 
+Implementation of [Enumeration Classes](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types) in PHP.
+The better alternative for Enums.
 
 In contrast to [existing solutions](#existing-solutions), this implementation avoids usage of [Magic methods](https://www.php.net/manual/en/language.oop5.magic.php) and 
 [Reflection](https://www.php.net/manual/en/book.reflection.php) to provide better performance and code autocompletion.

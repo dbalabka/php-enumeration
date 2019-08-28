@@ -1,6 +1,6 @@
 {
     "name": "dbalabka/php-enumeration",
-    "description": "Implementation of enumeration classes in PHP",
+    "description": "Implementation of Enumeration Classes in PHP. The better alternative for Enums",
     "type": "library",
     "license": "MIT",
     "authors": [

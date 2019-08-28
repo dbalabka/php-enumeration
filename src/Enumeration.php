@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka;
+namespace Dbalabka\Enumeration;
 
-use ArrayAccessible;
-use Dbalabka\Exception\InitializationException;
-use Exception;
-use function get_class;
+use Dbalabka\Enumeration\Exception\EnumerationException;
+use Dbalabka\Enumeration\Exception\InvalidArgumentException;
+use function array_search;
 use function get_class_vars;
 use function sprintf;
 
@@ -53,7 +52,7 @@ abstract class Enumeration
         static::initializeOrdinals();
     }
 
-    protected static function initializeOrdinals() : void
+    final protected static function initializeOrdinals() : void
     {
         $ordinal = static::INITIAL_ORDINAL;
         foreach (static::values() as $value) {
@@ -61,11 +60,15 @@ abstract class Enumeration
         }
     }
 
+    /**
+     * Override this method to manually initialize Enum values. Useful when __construct() accepts at least one argument.
+     * Enum objects does not have any properties by default.
+     */
     protected static function initializeValues() : void
     {
         $firstEnumItem = new static();
 
-        $staticVars = static::getStaticVars($firstEnumItem);
+        $staticVars = static::getEnumStaticVars($firstEnumItem);
 
         $firstEnumName = key($staticVars);
         static::$$firstEnumName = $firstEnumItem;
@@ -76,7 +79,7 @@ abstract class Enumeration
         }
     }
 
-    private static function getStaticVars(Enumeration $enum): array
+    final protected static function getEnumStaticVars(Enumeration $enum): array
     {
         $nonStaticVars = get_object_vars($enum);
         $allVars = get_class_vars(static::class);
@@ -88,7 +91,7 @@ abstract class Enumeration
     /**
      * @return static[]
      */
-    public static function values() : array
+    final public static function values() : array
     {
         return array_filter(
             get_class_vars(static::class),
@@ -101,7 +104,7 @@ abstract class Enumeration
     /**
      * @return static
      */
-    public static function valueOf(string $name)
+    final public static function valueOf(string $name)
     {
         if ($value = static::values()[$name] ?? null) {
             return $value;
@@ -109,16 +112,19 @@ abstract class Enumeration
         throw new InvalidArgumentException(sprintf('Invalid "%s" enum item name', $name));
     }
 
+    /**
+     * Override default constructor to set object properties for each Enum value.
+     */
     protected function __construct()
     {
     }
 
-    public function ordinal() : int
+    final public function ordinal() : int
     {
         if (null === $this->ordinal) {
             // When we call ordinal() in constructor the ordinal isn't initialized yet.
             // It is the only one case when ordinal isn't initialized.
-            $staticVars = static::getStaticVars($this);
+            $staticVars = static::getEnumStaticVars($this);
             $ordinal = static::INITIAL_ORDINAL;
             foreach ($staticVars as $var) {
                 if ($var === null || $var === $this) {
@@ -131,19 +137,23 @@ abstract class Enumeration
         return $this->ordinal;
     }
 
-    public function compareTo(self $enum) : int
+    final public function compareTo(self $enum) : int
     {
         return $this->ordinal() - $enum->ordinal();
     }
 
+    /**
+     * Override this method to custom "programmer-friendly" string representation of Enum value.
+     * It returns Enum name by default.
+     */
     public function __toString() : string
     {
         return $this->name();
     }
 
-    public function name() : string
+    final public function name() : string
     {
-        return \array_search($this, static::values(), true);
+        return array_search($this, static::values(), true);
     }
 
     final public function __clone()

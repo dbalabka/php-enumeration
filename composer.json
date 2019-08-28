@@ -23,13 +23,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Dbalabka\\": "src"
+            "Dbalabka\\Enumeration\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Dbalabka\\Examples\\": "examples",
-            "Dbalabka\\Tests\\": "tests"
+            "Dbalabka\\Enumeration\\Examples\\": "examples",
+            "Dbalabka\\Enumeration\\Tests\\": "tests"
         }
     }
 }

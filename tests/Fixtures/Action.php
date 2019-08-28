@@ -1,17 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Tests\Fixtures;
+namespace Dbalabka\Enumeration\Tests\Fixtures;
 
-use Dbalabka\Enumeration;
-use const PHP_VERSION_ID;
+use Dbalabka\Enumeration\Enumeration;
+use function version_compare;
+use const PHP_VERSION;
 
-if (PHP_VERSION_ID >= 70400) {
-    require_once __DIR__ . '/ActionTypedProperties.php';
-} else {
+if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
     require_once __DIR__ . '/ActionProperties.php';
+} else {
+    require_once __DIR__ . '/ActionTypedProperties.php';
 }
-final class Action extends Enumeration
+
+/**
+ * Final is omitted for testing purposes
+ */
+class Action extends Enumeration
 {
     use ActionProperties;
 }

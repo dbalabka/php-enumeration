@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Examples\Enum;
+namespace Dbalabka\Enumeration\Examples\Enum;
 
-use Dbalabka\Enumeration;
+use Dbalabka\Enumeration\Enumeration;
 
 final class Flag extends Enumeration
 {

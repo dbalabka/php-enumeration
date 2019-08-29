@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Dbalabka\Examples\Enum\Flag;
+use Dbalabka\Enumeration\Examples\Enum\Flag;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 

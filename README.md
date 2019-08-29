@@ -19,7 +19,7 @@ and [Python Enums](https://docs.python.org/3/library/enum.html).
 A basic way to declare a named Enumeration class:
 ```php
 <?php
-use Dbalabka\Enumeration;
+use Dbalabka\Enumeration\Enumeration;
 
 final class Action extends Enumeration
 {
@@ -126,14 +126,16 @@ multiple Enumeration classes.
    > On the other hand, it makes sense to allow sharing some common behavior between a group of enumerations...
    > (from [Python Enum documentation](https://docs.python.org/3/library/enum.html#restricted-enum-subclassing))
 2. Constructor should always be declared as non-public (`private` or `protected`) to avoid unwanted class instantiation.
-3. Implementation is based on assumption that all class static properties are elements of Enum. If there is a need to declare
-any static property that isn't an Enum element then you should override the `\Dbalabka\Enumeration::getStaticVars()` method.
-4. The method `Dbalabka\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use the 
+3. Implementation is based on assumption that all class static properties are elements of Enum. <!-- If there is a need to declare
+any static property that isn't an Enum element then you should override the `\Dbalabka\Enumeration\Enumeration::$notEnumVars` method. -->
+4. The method `Dbalabka\Enumeration\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use the 
 [vladimmi/construct-static](https://github.com/vladimmi/construct-static) custom loader to avoid boilerplate code.
 
 ## Usage
 ```php
 <?php
+use Dbalabka\Enumeration\Examples\Enum\Action;
+
 $viewAction = Action::$view;
 
 // it is possible to compare Enum elements
@@ -147,6 +149,7 @@ assert($editAction === Action::$edit);
 foreach (Action::values() as $name => $action) {
     assert($action instanceof Action);
     assert($name === (string) $action);
+    assert($name === $action->name());
 }
 ```
 

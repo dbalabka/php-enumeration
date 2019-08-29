@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Tests\Fixtures;
+namespace Dbalabka\Enumeration\Tests\Fixtures;
 
-use Dbalabka\Enumeration;
-use const PHP_VERSION_ID;
+use Dbalabka\Enumeration\Enumeration;
+use function version_compare;
+use const PHP_VERSION;
 
-if (PHP_VERSION_ID >= 70400) {
-    require_once __DIR__ . '/FlagTypedProperties.php';
-} else {
+if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
     require_once __DIR__ . '/FlagProperties.php';
+} else {
+    require_once __DIR__ . '/FlagTypedProperties.php';
 }
 final class Flag extends Enumeration
 {

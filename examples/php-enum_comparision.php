@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Dbalabka\Examples\Enum\Action;
+use Dbalabka\Enumeration\Examples\Enum\Action;
 
-if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
     trigger_error('This code requires PHP >= 7.4', E_USER_NOTICE);
     return;
 }

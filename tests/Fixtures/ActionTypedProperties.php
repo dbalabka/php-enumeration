@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Dbalabka\Tests\Fixtures;
+namespace Dbalabka\Enumeration\Tests\Fixtures;
 
 trait ActionProperties
 {

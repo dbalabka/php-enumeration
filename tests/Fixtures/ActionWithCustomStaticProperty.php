@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Dbalabka\Enumeration\Tests\Fixtures;
 
@@ -12,11 +11,9 @@ if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
 } else {
     require_once __DIR__ . '/ActionTypedProperties.php';
 }
-final class ActionWithPublicConstructor extends Action
+final class ActionWithCustomStaticProperty extends Action
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}
+    use ActionProperties;
 
+    public static $customProperty;
+}

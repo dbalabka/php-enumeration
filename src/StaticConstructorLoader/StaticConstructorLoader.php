@@ -8,7 +8,7 @@ use Dbalabka\StaticConstructorLoader\Exception\StaticConstructorLoaderException;
 
 /**
  * Decorates the Composer autoloader to statically initialize the class.
- * Very lightweight workaround described in https://wiki.php.net/rfc/static_class_constructor
+ * This is a very lightweight workaround which is described in https://wiki.php.net/rfc/static_class_constructor
  *
  * @author Dmitrijs Balabka <dmitry.balabka@gmail.com>
  */

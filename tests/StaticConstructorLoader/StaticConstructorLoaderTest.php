@@ -5,6 +5,7 @@ namespace Dbalabka\StaticConstructorLoader\Tests;
 use Composer\Autoload\ClassLoader;
 use Dbalabka\StaticConstructorLoader\Exception\StaticConstructorLoaderException;
 use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
+use Dbalabka\StaticConstructorLoader\Tests\Fixtures\Action;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Constraint\Exception as ConstraintException;
 use PHPUnit\Framework\TestCase;
@@ -129,5 +130,25 @@ class StaticConstructorLoaderTest extends TestCase
             ],
             $autoloaders
         );
+    }
+
+    public function testClassLoad()
+    {
+        $composerClassLoader = array_filter(spl_autoload_functions(), function ($v) {
+            return is_array($v) && $v[0] instanceof ClassLoader;
+        })[0][0];
+        new StaticConstructorLoader($composerClassLoader);
+        class_exists(Action::class);
+        $this->assertInstanceOf(Action::class, Action::$instance);
+    }
+
+    public function testNotExistingClassLoad()
+    {
+        $composerClassLoader = array_filter(spl_autoload_functions(), function ($v) {
+            return is_array($v) && $v[0] instanceof ClassLoader;
+        })[0][0];
+        new StaticConstructorLoader($composerClassLoader);
+        $this->assertFalse(class_exists('NotExistingClass'));
+
     }
 }

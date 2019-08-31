@@ -13,13 +13,9 @@
         "php": ">=7.1"
     },
     "require-dev": {
-        "vladimmi/construct-static": "dev-master",
         "myclabs/php-enum": "^1.0",
         "phpunit/phpunit": "^7.5",
         "phpbench/phpbench": "^0.16.9"
-    },
-    "suggest": {
-        "vladimmi/construct-static": "Allows to call __constructStatic on class load"
     },
     "autoload": {
         "psr-4": {

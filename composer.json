@@ -25,7 +25,8 @@
     "autoload-dev": {
         "psr-4": {
             "Dbalabka\\Enumeration\\Examples\\": "examples",
-            "Dbalabka\\Enumeration\\Tests\\": "tests"
+            "Dbalabka\\Enumeration\\Tests\\": "tests\\Enumeration",
+            "Dbalabka\\StaticConstructorLoader\\Tests\\": "tests\\StaticConstructorLoader"
         }
     }
 }

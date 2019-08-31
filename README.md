@@ -130,7 +130,7 @@ multiple Enumeration classes.
 3. Implementation is based on assumption that all class static properties are elements of Enum. <!-- If there is a need to declare
 any static property that isn't an Enum element then you should override the `\Dbalabka\Enumeration\Enumeration::$notEnumVars` method. -->
 4. The method `Dbalabka\Enumeration\Enumeration::initialize()` should be called after each Enumeration class declaration. Please use the 
-[vladimmi/construct-static](https://github.com/vladimmi/construct-static) custom loader to avoid boilerplate code.
+[StaticConstructorLoader](#class-static-initialization) provided in this library to avoid boilerplate code.
 
 ## Usage
 ```php

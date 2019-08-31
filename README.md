@@ -26,9 +26,10 @@ final class Action extends Enumeration
     public static $view;
     public static $edit;
 }
-// to avoid manual initialization you can setup the "vladimmi/construct-static" custom loader
 Action::initialize();
 ```
+**Note!** You should always call the `Enumeration::initialize()` method right after Enumeration Class declaration.
+To avoid manual initialization you can setup the [StaticConstructorLoader](#class-static-initialization) provided in this library.
 
 Declaration with Typed Properties support:
 ```php
@@ -168,17 +169,19 @@ Action::$view = null;
 
 ### Class static initialization 
 This implementation relies on class static initialization which was proposed in [Static Class Constructor](https://wiki.php.net/rfc/static_class_constructor).
-The RFC describes possible workarounds. The simplest way is to call the initialization method right after class declaration, 
+The RFC is still in Draft status but it describes possible workarounds. The simplest way is to call the initialization method right after the class declaration, 
 but it requires the developer to keep this in mind. Thanks to [Typed Properties](https://wiki.php.net/rfc/typed_properties_v2)
-we can control uninitialized properties - PHP will throw and error in case of access to an uninitialized property.
-It might be automated with custom autoloader implemented in [vladimmi/construct-static](https://github.com/vladimmi/construct-static) library.
+we can control uninitialized properties - PHP will throw an error in case of access to an uninitialized property.
+It might be automated with custom autoloader [Dbalabka\StaticConstructorLoader\StaticConstructorLoader](./src/StaticConstructorLoader/StaticConstructorLoader.php) 
+provided in this library:
 ```php
-<?php
-// You should always call the initialize() method right after class declaration
-// To avoid manual initialization you can setup the "vladimmi/construct-static" custom loader
-Action::initialize();
-```
-See [examples/class_static_construct.php](examples/class_static_construct.php) for example to overcome this limitation. 
+<?php 
+use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
+
+$composer = require_once(__DIR__ . '/vendor/autoload.php');
+$loader = new StaticConstructorLoader($composer);
+``` 
+See [examples/class_static_construct.php](examples/class_static_construct.php) for example. 
 
 ### Serialization
 There is no possibility to serialize the singleton. As a result, we have to restrict direct Enum object serialization.

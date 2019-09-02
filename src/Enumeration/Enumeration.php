@@ -5,6 +5,7 @@ namespace Dbalabka\Enumeration;
 
 use Dbalabka\Enumeration\Exception\EnumerationException;
 use Dbalabka\Enumeration\Exception\InvalidArgumentException;
+use Dbalabka\StaticConstructorLoader\StaticConstructorInterface;
 use function array_search;
 use function get_class_vars;
 use function sprintf;
@@ -17,7 +18,7 @@ use function sprintf;
  *
  * @author Dmitry Balabka <dmitry.balabka@gmail.com>
  */
-abstract class Enumeration
+abstract class Enumeration implements StaticConstructorInterface
 {
     const INITIAL_ORDINAL = 0;
 
@@ -28,13 +29,7 @@ abstract class Enumeration
 
     private static $initializedEnums = [];
 
-    /**
-     * This method should be called right after enumerate class declaration.
-     * Unfortunately, PHP does not support static initialization.
-     * See static init RFC: https://wiki.php.net/rfc/static_class_constructor
-     * Typed Properties will help to control of calling this method.
-     */
-    final protected static function __constructStatic() : void
+    final public static function __constructStatic() : void
     {
         if (self::class === static::class) {
             return;

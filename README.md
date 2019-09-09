@@ -228,3 +228,5 @@ See complete example in [examples/serialization_php74.php](examples/serializatio
     * [Class Enum<E extends Enum<E>>](https://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html) - Java™ Platform, Standard Edition 7 API Specification
 * [Use enumeration classes instead of enum types](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types) - .NET microservices - Architecture e-book
     * [Enumeration Class implementation](https://github.com/dotnet-architecture/eShopOnContainers/blob/8960db40d43d79ad475799dedfe311ebc49cab99/src/Services/Ordering/Ordering.Domain/SeedWork/Enumeration.cs) - Microservices Architecture and Containers based Reference Application
+* [Python Enum is a singleton](https://repl.it/@torinaki/Python-Enum-is-Singleton)
+* [Java Enum is a singleton](https://repl.it/@torinaki/Java-Enum-is-Singleton)

@@ -148,7 +148,10 @@ abstract class Enumeration implements StaticConstructorInterface
 
     final public function name() : string
     {
-        return array_search($this, static::values(), true);
+        if ($name = array_search($this, static::values(), true)) {
+            return $name;
+        }
+        throw new EnumerationException('Enum element is not registered');
     }
 
     final public function __clone()

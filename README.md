@@ -218,6 +218,10 @@ See complete example in [examples/serialization_php74.php](examples/serializatio
 * https://github.com/myclabs/php-enum
 * https://github.com/marc-mabe/php-enum
 * https://www.php.net/manual/en/class.splenum.php
+* https://github.com/spatie/enum
+* https://github.com/grifart/enum
+* https://github.com/consistence/consistence#enums-and-multienums
+* https://github.com/zlikavac32/php-enum
 * [PHP RFC: Enumerated Types](https://wiki.php.net/rfc/enum)
 
 (there are a lot of [other PHP implementations](https://packagist.org/search/?query=php-enum))

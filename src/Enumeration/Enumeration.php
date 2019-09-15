@@ -6,6 +6,7 @@ namespace Dbalabka\Enumeration;
 use Dbalabka\Enumeration\Exception\EnumerationException;
 use Dbalabka\Enumeration\Exception\InvalidArgumentException;
 use Dbalabka\StaticConstructorLoader\StaticConstructorInterface;
+use Serializable;
 use function array_search;
 use function get_class_vars;
 use function sprintf;
@@ -18,7 +19,7 @@ use function sprintf;
  *
  * @author Dmitry Balabka <dmitry.balabka@gmail.com>
  */
-abstract class Enumeration implements StaticConstructorInterface
+abstract class Enumeration implements StaticConstructorInterface, Serializable
 {
     const INITIAL_ORDINAL = 0;
 
@@ -158,6 +159,7 @@ abstract class Enumeration implements StaticConstructorInterface
 
     /**
      * Serialization is not allowed right now. It is not possible to properly serialize the singleton.
+     * See the documentation for workaround.
      */
     final public function __sleep()
     {
@@ -165,6 +167,26 @@ abstract class Enumeration implements StaticConstructorInterface
     }
 
     final public function __wakeup()
+    {
+        throw new EnumerationException('Enum unserialization is not allowed');
+    }
+
+    final public function __serialize()
+    {
+        throw new EnumerationException('Enum serialization is not allowed');
+    }
+
+    final public function __unserialize()
+    {
+        throw new EnumerationException('Enum unserialization is not allowed');
+    }
+
+    final public function serialize()
+    {
+        throw new EnumerationException('Enum serialization is not allowed');
+    }
+
+    final public function unserialize($data)
     {
         throw new EnumerationException('Enum unserialization is not allowed');
     }

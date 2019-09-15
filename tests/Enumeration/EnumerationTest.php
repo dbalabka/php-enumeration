@@ -11,6 +11,7 @@ use Dbalabka\Enumeration\Tests\Fixtures\ActionWithCustomStaticProperty;
 use Dbalabka\Enumeration\Tests\Fixtures\ActionWithPublicConstructor;
 use Dbalabka\Enumeration\Tests\Fixtures\Flag;
 use Error;
+use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\TestCase;
 use function serialize;
 use function version_compare;
@@ -96,7 +97,11 @@ class EnumerationTest extends TestCase
     public function testUnserialization()
     {
         Flag::initialize();
-        $this->expectException(EnumerationException::class);
+        if (version_compare(PHP_VERSION, '7.4.0-dev', '<')) {
+            $this->expectException(Warning::class);
+        } else {
+            $this->expectException(EnumerationException::class);
+        }
         unserialize('O:40:"Dbalabka\Enumeration\Tests\Fixtures\Flag":2:{s:51:" Dbalabka\Enumeration\Tests\Fixtures\Flag flagValue";i:2;s:10:" * ordinal";i:1;}');
     }
 

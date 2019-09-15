@@ -161,16 +161,6 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
      * Serialization is not allowed right now. It is not possible to properly serialize the singleton.
      * See the documentation for workaround.
      */
-    final public function __sleep()
-    {
-        throw new EnumerationException('Enum serialization is not allowed');
-    }
-
-    final public function __wakeup()
-    {
-        throw new EnumerationException('Enum unserialization is not allowed');
-    }
-
     final public function __serialize()
     {
         throw new EnumerationException('Enum serialization is not allowed');

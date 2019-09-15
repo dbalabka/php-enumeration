@@ -97,12 +97,12 @@ class EnumerationTest extends TestCase
     public function testUnserialization()
     {
         Flag::initialize();
+        $this->expectException(EnumerationException::class);
         if (version_compare(PHP_VERSION, '7.4.0-dev', '<')) {
-            $this->expectException(Warning::class);
+            unserialize('C:40:"Dbalabka\\Enumeration\\Tests\\Fixtures\\Flag":24:{a:1:{s:7:"ordinal";i:2;}}');
         } else {
-            $this->expectException(EnumerationException::class);
+            unserialize('O:40:"Dbalabka\\Enumeration\\Tests\\Fixtures\\Flag":1:{s:7:"ordinal";i:2;}');
         }
-        unserialize('O:40:"Dbalabka\Enumeration\Tests\Fixtures\Flag":2:{s:51:" Dbalabka\Enumeration\Tests\Fixtures\Flag flagValue";i:2;s:10:" * ordinal";i:1;}');
     }
 
     public function testClone()

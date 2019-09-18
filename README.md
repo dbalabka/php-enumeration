@@ -215,13 +215,20 @@ class SomeClass
 See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
 
 ## Existing solutions
-* https://github.com/myclabs/php-enum
-* https://github.com/marc-mabe/php-enum
-* https://www.php.net/manual/en/class.splenum.php
-* https://github.com/spatie/enum
+Libraries:
+* https://github.com/myclabs/php-enum (~1200 stars)
+* https://github.com/BenSampo/laravel-enum (~700 stars)
+* https://github.com/marc-mabe/php-enum (~300 stars)
+* https://github.com/spatie/enum (~200 stars)
+* https://github.com/Elao/PhpEnums (~100 stars)
+* https://github.com/consistence/consistence#enums-and-multienums (~100 stars)
+* https://github.com/mad-web/laravel-enum (~80 stars)
+* https://github.com/greg0ire/enum (~40 stars)
 * https://github.com/grifart/enum
-* https://github.com/consistence/consistence#enums-and-multienums
 * https://github.com/zlikavac32/php-enum
+
+PHP native:
+* https://www.php.net/manual/en/class.splenum.php
 * [PHP RFC: Enumerated Types](https://wiki.php.net/rfc/enum)
 
 (there are a lot of [other PHP implementations](https://packagist.org/search/?query=php-enum))

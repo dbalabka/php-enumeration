@@ -191,4 +191,15 @@ class EnumerationTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         ActionWithCustomStaticProperty::valueOf('customProperty');
     }
+
+    public function testNameWhenIncorrectlyInitilizedProperies()
+    {
+        Flag::initialize();
+
+        $notOk = Flag::$notOk;
+        Flag::$notOk = Flag::$noState;
+
+        $this->expectException(EnumerationException::class);
+        $notOk->name();
+    }
 }

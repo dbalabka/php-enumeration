@@ -150,10 +150,17 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
 
     final public function name() : string
     {
-        if ($name = array_search($this, static::values(), true)) {
-            return $name;
+        $name = array_search($this, static::values(), true);
+        if (false === $name) {
+            throw new EnumerationException(
+                sprintf(
+                    'Can not find $this in $s::values(). ' .
+                    'Static properties was not initialized properly.',
+                    get_class($this),
+                )
+            );
         }
-        throw new EnumerationException('Can not find $this in static::values()');
+        return $name;
     }
 
     final public function __clone()

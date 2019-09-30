@@ -155,7 +155,7 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
             throw new EnumerationException(
                 sprintf(
                     'Can not find $this in $s::values(). ' .
-                    'Static properties was not initialized properly.',
+                    'It seems that the static property was overwritten. This is not allowed.',
                     get_class($this),
                 )
             );

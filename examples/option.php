@@ -12,17 +12,27 @@ if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
 $composer = require_once(__DIR__ . '/../vendor/autoload.php');
 $loader = new StaticConstructorLoader($composer);
 
-function getResult(bool $returnResult): Option
+/**
+ * @template T
+ * @psalm-param bool $returnResult
+ * @psalm-param T $value
+ * @psalm-return Option<T>|Option<null>
+ */
+function getResult(bool $returnResult, $value)
 {
     if ($returnResult) {
-        return (Option::$some)(1);
+        return (Option::$some)($value);
     }
     return Option::$none;
 }
 
+/**
+ * @psalm-param Option<int>|Option<null> $option
+ */
 function printResult(Option $option) : void
 {
     if ($option instanceof Option::$some) {
+        /** @psalm-suppress PossiblyNullOperand psalm can not properly determine that it is a Some and use int|null type */
         echo 'Return some value = ' . ($option->unwrap() + 1) . PHP_EOL;
     } elseif ($option instanceof Option::$none) {
         echo 'Return none' . PHP_EOL;
@@ -31,9 +41,12 @@ function printResult(Option $option) : void
     }
 }
 
-$option1 = getResult(true);
+$option1 = getResult(true, '1');
+/** @psalm-suppress PossiblyInvalidArgument Psalm correctly catches incorrect passed type */
 printResult($option1);
-$option2 = getResult(false);
+$option1 = getResult(true, 1);
+printResult($option1);
+$option2 = getResult(false, 1);
 printResult($option2);
 
 

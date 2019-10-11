@@ -11,17 +11,17 @@ use Dbalabka\Enumeration\Enumeration;
  * @author Dmitry Balabka <dmitry.balabka@gmail.com>
  * @template T
  */
-abstract class Option extends Enumeration
+class Option extends Enumeration
 {
     /**
-     * @psalm-var Option<T>
+     * @psalm-var Option<mixed>
      */
-    public static self $some;
+    public static $some;
 
     /**
-     * @psalm-var Option<T>
+     * @psalm-var Option<null>
      */
-    public static self $none;
+    public static $none;
 
     /**
      * @psalm-var T
@@ -107,8 +107,9 @@ abstract class Option extends Enumeration
     }
 
     /**
-     * @psalm-param T $value
-     * @psalm-return Option<T>
+     * @template G
+     * @psalm-param G $value
+     * @psalm-return Option<G>
      */
     public function __invoke($value)
     {

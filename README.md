@@ -195,7 +195,7 @@ but it gives the possibility to control this in the class which holds the refere
 with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in a similar way.
 For example, Java [handles](https://stackoverflow.com/questions/15521309/is-custom-enum-serializable-too/15522276#15522276) Enums serialization differently than other classes, but you can serialize it directly thanks to [readResolve()](https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html).
 In PHP, we can't serialize Enums directly, but we can handle Enums serialization in class that holds the reference. We can serialize the name of the Enum constant and use `valueOf()` method to obtain the Enum constant value during unserialization. 
-So this problem somewhat resolved a the cost of a worse developer experience. Hope it will be solved in future RFCs.
+So this problem somewhat resolved the cost of a worse developer experience. Hope it will be solved in future RFCs.
 ```php
 class SomeClass
 {
@@ -212,7 +212,22 @@ class SomeClass
     }
 }
 ``` 
-See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
+See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).
+
+### Callable static properties syntax
+Unfortunately, you can not simply use static property as callable. There was a 
+[syntax change](https://www.php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect) since PHP 7.0.
+```php
+// Instead of using syntax
+Option::$some('1') // this line will rise an error "Function name must be a string"
+// you should use 
+(Option::$some)('1')
+```
+Probably the another option is to use magic calls with `__callStatic` but this variant suffers from missing autosuggestion
+and static analysis that might be overcome by additional manually added annotations.
+```php
+Option::some('1')
+```
 
 ## Existing solutions
 Libraries:

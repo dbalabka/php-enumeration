@@ -32,7 +32,10 @@ function getResult(bool $returnResult, $value)
 function printResult(Option $option) : void
 {
     if ($option instanceof Option::$some) {
-        /** @psalm-suppress PossiblyNullOperand psalm can not properly determine that it is a Some and use int|null type */
+        /**
+         * @psalm-suppress PossiblyNullOperand psalm can not properly determine that it is a Some and use int|null type.
+         *                 We need to write custom type inference from $option if it is instance of Option::$some and same for Option::$none
+         */
         echo 'Return some value = ' . ($option->unwrap() + 1) . PHP_EOL;
     } elseif ($option instanceof Option::$none) {
         echo 'Return none' . PHP_EOL;

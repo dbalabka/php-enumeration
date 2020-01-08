@@ -181,6 +181,14 @@ use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
 $composer = require_once(__DIR__ . '/vendor/autoload.php');
 $loader = new StaticConstructorLoader($composer);
 ``` 
+Also, it would be very helpful to have expression based properties initialization:
+```php
+class Enum {
+    // this is not allowed
+    public static $FOO = new Enum();
+    public static $BAR = new Enum();
+}
+```
 See [examples/class_static_construct.php](examples/class_static_construct.php) for example. 
 
 ### Serialization
@@ -216,17 +224,29 @@ See complete example in [examples/serialization_php74.php](examples/serializatio
 
 ### Callable static properties syntax
 Unfortunately, you can not simply use static property as callable. There was a 
-[syntax change](https://www.php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect) since PHP 7.0.
+[syntax change](https://wiki.php.net/rfc/uniform_variable_syntax#backward_incompatible_changes) since PHP 7.0.
 ```php
 // Instead of using syntax
-Option::$some('1') // this line will rise an error "Function name must be a string"
+Option::$some('1'); // this line will rise an error "Function name must be a string"
 // you should use 
-(Option::$some)('1')
+(Option::$some)('1');
 ```
-Probably the another option is to use magic calls with `__callStatic` but this variant suffers from missing autosuggestion
-and static analysis that might be overcome by additional manually added annotations.
+It might be that using static variables isn't best option.
+  
+Probably the another option is to use magic calls with `__callStatic` but this variant suffers from missing autosuggestion,
+negative performance impact and missing static analysis that might be overcome by additional manually added annotations.
 ```php
-Option::some('1')
+Option::some('1');
+```
+
+The best option is native PHP implementation. Unfortunately, it might be complicated task. As a quick solution it would be
+helpful to have late (in runtime) constants initialization or/and expression based class constants initialization:
+```php
+class Enum {
+   // this is not allowed
+   const FOO = new Enum();
+   const BAR = new Enum();
+}
 ```
 
 ## Existing solutions

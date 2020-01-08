@@ -239,15 +239,17 @@ negative performance impact and missing static analysis that might be overcome b
 Option::some('1');
 ```
 
-The best option is native PHP implementation. Unfortunately, it might be complicated task. As a quick solution it would be
+The best option is native PHP implementation. Unfortunately, it might be complicated task. It might seem that a quick solution it would be
 helpful to have late (in runtime) constants initialization or/and expression based class constants initialization:
 ```php
 class Enum {
    // this is not allowed
-   const FOO = new Enum();
-   const BAR = new Enum();
+   public const FOO = new Enum();
+   public const BAR = new Enum();
 }
 ```
+Still, calling `Enum::FOO()` will try to find a method instead of trying to treat constant's value as a callable. 
+So we make a conclusion that enum syntax that use constants will not work but static properties will.  
 
 ## Existing solutions
 Libraries:

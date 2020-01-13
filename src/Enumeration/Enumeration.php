@@ -24,10 +24,11 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
     const INITIAL_ORDINAL = 0;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $ordinal;
 
+    /** @var array */
     private static $initializedEnums = [];
 
     final public static function __constructStatic() : void
@@ -149,7 +150,17 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
 
     final public function name() : string
     {
-        return array_search($this, static::values(), true);
+        $name = array_search($this, static::values(), true);
+        if (false === $name) {
+            throw new EnumerationException(
+                sprintf(
+                    'Can not find $this in $s::values(). ' .
+                    'It seems that the static property was overwritten. This is not allowed.',
+                    get_class($this)
+                )
+            );
+        }
+        return $name;
     }
 
     final public function __clone()

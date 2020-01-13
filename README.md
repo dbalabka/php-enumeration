@@ -154,6 +154,15 @@ foreach (Action::values() as $name => $action) {
 }
 ```
 
+More usage examples:
+* [Static constructor usage](./examples/class_static_construct.php)
+* [Option enum](./examples/day.php) similar to Rust enum
+* [Shape enum](./examples/shape.php) similar to Rust enum
+* [Serialization restriction](./examples/serialization_php74.php)
+* [Day enum](./examples/day.php)
+* [Flag enum](./examples/day.php)
+* [Planet enum](./examples/planet.php)
+
 ## Known issues
 ### Readonly Properties
 In the current implementation, static property value can be occasionally replaced. 
@@ -181,6 +190,14 @@ use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
 $composer = require_once(__DIR__ . '/vendor/autoload.php');
 $loader = new StaticConstructorLoader($composer);
 ``` 
+Also, it would be very helpful to have expression based properties initialization:
+```php
+class Enum {
+    // this is not allowed
+    public static $FOO = new Enum();
+    public static $BAR = new Enum();
+}
+```
 See [examples/class_static_construct.php](examples/class_static_construct.php) for example. 
 
 ### Serialization
@@ -195,7 +212,7 @@ but it gives the possibility to control this in the class which holds the refere
 with [Serializable Interface](https://www.php.net/manual/en/class.serializable.php) in a similar way.
 For example, Java [handles](https://stackoverflow.com/questions/15521309/is-custom-enum-serializable-too/15522276#15522276) Enums serialization differently than other classes, but you can serialize it directly thanks to [readResolve()](https://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html).
 In PHP, we can't serialize Enums directly, but we can handle Enums serialization in class that holds the reference. We can serialize the name of the Enum constant and use `valueOf()` method to obtain the Enum constant value during unserialization. 
-So this problem somewhat resolved a the cost of a worse developer experience. Hope it will be solved in future RFCs.
+So this problem somewhat resolved the cost of a worse developer experience. Hope it will be solved in future RFCs.
 ```php
 class SomeClass
 {
@@ -212,7 +229,36 @@ class SomeClass
     }
 }
 ``` 
-See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).  
+See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).
+
+### Callable static properties syntax
+Unfortunately, you can not simply use static property as callable. There was a 
+[syntax change](https://wiki.php.net/rfc/uniform_variable_syntax#backward_incompatible_changes) since PHP 7.0.
+```php
+// Instead of using syntax
+Option::$some('1'); // this line will rise an error "Function name must be a string"
+// you should use 
+(Option::$some)('1');
+```
+It might be that using static variables isn't best option.
+  
+Probably the another option is to use magic calls with `__callStatic` but this variant suffers from missing autosuggestion,
+negative performance impact and missing static analysis that might be overcome by additional manually added annotations.
+```php
+Option::some('1');
+```
+
+The best option is native PHP implementation. Unfortunately, it might be complicated task. It might seem that a quick solution it would be
+helpful to have late (in runtime) constants initialization or/and expression based class constants initialization:
+```php
+class Enum {
+   // this is not allowed
+   public const FOO = new Enum();
+   public const BAR = new Enum();
+}
+```
+Still, calling `Enum::FOO()` will try to find a method instead of trying to treat constant's value as a callable. 
+So we make a conclusion that enum syntax that use constants will not work but static properties will.  
 
 ## Existing solutions
 Libraries:

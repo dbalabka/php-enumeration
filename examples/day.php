@@ -20,7 +20,8 @@ class EnumTest
         $this->day = $day;
     }
 
-    public function tellItLikeItIs() {
+    public function tellItLikeItIs(): void
+    {
         switch ($this->day) {
             case Day::$monday:
                 echo "Mondays are bad.\n";

@@ -19,15 +19,18 @@ install:
   - chmod +x coverage/bin/phpcov
 
 script:
+  - php vendor/bin/psalm
   - phpdbg -qrr vendor/bin/phpunit --coverage-php coverage/cov/main.cov
 
   - php examples/card_type.php
   - php examples/class_static_construct.php
   - php examples/day.php
   - php examples/flag.php
+  - php examples/option.php
   - php examples/php-enum_comparision.php
   - php examples/planet.php
   - php examples/serialization_php74.php
+  - php examples/shape.php
 
 after_script:
   - curl -OL https://github.com/php-coveralls/php-coveralls/releases/download/v1.0.0/coveralls.phar

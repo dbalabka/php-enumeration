@@ -154,6 +154,15 @@ foreach (Action::values() as $name => $action) {
 }
 ```
 
+More usage examples:
+* [Static constructor usage](./examples/class_static_construct.php)
+* [Option enum](./examples/day.php) similar to Rust enum
+* [Shape enum](./examples/shape.php) similar to Rust enum
+* [Serialization restriction](./examples/serialization_php74.php)
+* [Day enum](./examples/day.php)
+* [Flag enum](./examples/day.php)
+* [Planet enum](./examples/planet.php)
+
 ## Known issues
 ### Readonly Properties
 In the current implementation, static property value can be occasionally replaced. 

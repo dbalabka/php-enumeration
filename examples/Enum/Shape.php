@@ -13,37 +13,14 @@ use Dbalabka\Enumeration\Examples\Struct\Point;
  */
 abstract class Shape extends Enumeration
 {
+    /** @var Circle */
     public static $circle;
+    /** @var Rectangle */
     public static $rectangle;
 
     protected static function initializeValues(): void
     {
-        self::$circle = new class extends Shape
-        {
-            private Point $point;
-            private float $radius;
-
-            public function __invoke(Point $point, float $radius)
-            {
-                $circle = new static();
-                $circle->point = $point;
-                $circle->radius = $radius;
-                return $circle;
-            }
-        };
-
-        self::$rectangle = new class extends Shape
-        {
-            private Point $pointA;
-            private Point $pointB;
-
-            public function __invoke(Point $pointA, Point $pointB)
-            {
-                $rectangle = new static();
-                $rectangle->pointA = $pointA;
-                $rectangle->pointB = $pointB;
-                return $rectangle;
-            }
-        };
+        self::$circle = new Circle();
+        self::$rectangle = new Rectangle();
     }
 }

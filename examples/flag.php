@@ -12,7 +12,7 @@ assert(Flag::$ok < Flag::$notOk);
 assert(Flag::$ok < Flag::$unavailable);
 assert(Flag::$notOk < Flag::$unavailable);
 
-set_error_handler(function ($errno, $errstr) {
+set_error_handler(static function (int $errno, string $errstr) {
     assert($errstr === sprintf('Object of class %s could not be converted to int', Flag::class));
 });
 // Operators overloading is not supported by PHP (see https://wiki.php.net/rfc/operator-overloading)

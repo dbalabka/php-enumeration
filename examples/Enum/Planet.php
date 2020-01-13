@@ -45,7 +45,8 @@ final class Planet extends Enumeration
         return self::G * $this->mass / ($this->radius * $this->radius);
     }
 
-    public function surfaceWeight(float $otherMass) {
+    public function surfaceWeight(float $otherMass) : float
+    {
         return $otherMass * $this->surfaceGravity();
     }
 }

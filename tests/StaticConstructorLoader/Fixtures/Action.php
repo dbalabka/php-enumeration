@@ -10,7 +10,7 @@ class Action implements StaticConstructorInterface
 {
     public static $instance;
 
-    public static function __constructStatic()
+    public static function __constructStatic() : void
     {
         static::$instance = new static();
     }

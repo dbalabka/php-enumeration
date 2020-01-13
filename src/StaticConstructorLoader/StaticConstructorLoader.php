@@ -53,7 +53,7 @@ final class StaticConstructorLoader
         array_map('spl_autoload_register', $loadersToRestore, $flagTrue, $flagTrue);
     }
 
-    public function loadClass($className)
+    public function loadClass(string $className): ?bool
     {
         $result = $this->classLoader->loadClass($className);
         if ($result === true && $className !== StaticConstructorInterface::class && is_a($className, StaticConstructorInterface::class, true)) {

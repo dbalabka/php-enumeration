@@ -15,5 +15,5 @@ $loader = new StaticConstructorLoader($composer);
 $earthWeight = 175;
 $mass = $earthWeight / Planet::$earth->surfaceGravity();
 foreach (Planet::values() as $p) {
-    printf("Your weight on %s is %s\n", $p, $p->surfaceWeight($mass));
+    printf("Your weight on %s is %s\n", (string) $p, $p->surfaceWeight($mass));
 }

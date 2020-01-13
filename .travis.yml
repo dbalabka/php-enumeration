@@ -19,6 +19,7 @@ install:
   - chmod +x coverage/bin/phpcov
 
 script:
+  - php vendor/bin/psalm
   - phpdbg -qrr vendor/bin/phpunit --coverage-php coverage/cov/main.cov
 
   - php examples/card_type.php

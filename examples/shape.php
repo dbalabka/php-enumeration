@@ -15,6 +15,7 @@ $loader = new StaticConstructorLoader($composer);
 
 try {
     // Unfortunately, this will not be possible because of https://www.php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect
+    /** @psalm-suppress UndefinedGlobalVariable */
     $circ1 = Shape::$circle(new Point(1.0, 1.0), 5.0);
     assert(false);
 } catch (Error $e) {

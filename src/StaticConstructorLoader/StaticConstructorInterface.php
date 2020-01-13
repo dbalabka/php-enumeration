@@ -13,5 +13,5 @@ interface StaticConstructorInterface
      * Unfortunately, PHP does not support static initialization.
      * See static init RFC: https://wiki.php.net/rfc/static_class_constructor
      */
-    public static function __constructStatic();
+    public static function __constructStatic() : void;
 }

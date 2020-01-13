@@ -7,8 +7,11 @@ use Dbalabka\Enumeration\Enumeration;
 
 final class Color extends Enumeration
 {
+    /** @var $this */
     public static $red;
+    /** @var $this */
     public static $green;
+    /** @var $this */
     public static $blue;
 
     private $value;

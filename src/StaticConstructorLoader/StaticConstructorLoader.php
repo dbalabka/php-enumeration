@@ -12,7 +12,7 @@ use Dbalabka\StaticConstructorLoader\Exception\StaticConstructorLoaderException;
  *
  * @author Dmitrijs Balabka <dmitry.balabka@gmail.com>
  */
-final class StaticConstructorLoader
+final class StaticConstructorLoader extends ClassLoader /* extending for an contract */
 {
     /**
      * @var ClassLoader
@@ -53,12 +53,107 @@ final class StaticConstructorLoader
         array_map('spl_autoload_register', $loadersToRestore, $flagTrue, $flagTrue);
     }
 
-    public function loadClass(string $className): ?bool
+    public function loadClass($className): ?bool
     {
         $result = $this->classLoader->loadClass($className);
         if ($result === true && $className !== StaticConstructorInterface::class && is_a($className, StaticConstructorInterface::class, true)) {
             $className::__constructStatic();
         }
         return $result;
+    }
+
+    public function getPrefixes()
+    {
+        return $this->classLoader->getPrefixes();
+    }
+
+    public function getPrefixesPsr4()
+    {
+        return $this->classLoader->getPrefixesPsr4();
+    }
+
+    public function getFallbackDirs()
+    {
+        return $this->classLoader->getFallbackDirs();
+    }
+
+    public function getFallbackDirsPsr4()
+    {
+        return $this->classLoader->getFallbackDirsPsr4();
+    }
+
+    public function getClassMap()
+    {
+        return $this->classLoader->getClassMap();
+    }
+
+    public function addClassMap(array $classMap)
+    {
+        $this->classLoader->addClassMap($classMap);
+    }
+
+    public function add($prefix, $paths, $prepend = false)
+    {
+        $this->classLoader->add($prefix, $paths, $prepend);
+    }
+
+    public function addPsr4($prefix, $paths, $prepend = false)
+    {
+        $this->classLoader->addPsr4($prefix, $paths, $prepend);
+    }
+
+    public function set($prefix, $paths)
+    {
+        $this->classLoader->set($prefix, $paths);
+    }
+
+    public function setPsr4($prefix, $paths)
+    {
+        $this->classLoader->setPsr4($prefix, $paths);
+    }
+
+    public function setUseIncludePath($useIncludePath)
+    {
+        $this->classLoader->setUseIncludePath($useIncludePath);
+    }
+
+    public function getUseIncludePath()
+    {
+        return $this->classLoader->getUseIncludePath();
+    }
+
+    public function setClassMapAuthoritative($classMapAuthoritative)
+    {
+        $this->classLoader->setClassMapAuthoritative($classMapAuthoritative);
+    }
+
+    public function isClassMapAuthoritative()
+    {
+        return $this->classLoader->isClassMapAuthoritative();
+    }
+
+    public function setApcuPrefix($apcuPrefix)
+    {
+        $this->classLoader->setApcuPrefix($apcuPrefix);
+    }
+
+    public function getApcuPrefix()
+    {
+        return $this->classLoader->getApcuPrefix();
+    }
+
+    public function register($prepend = false)
+    {
+        $this->classLoader->register($prepend);
+    }
+
+    public function unregister()
+    {
+        $this->classLoader->unregister();
+    }
+
+    public function findFile($class)
+    {
+        return $this->classLoader->findFile($class);
     }
 }

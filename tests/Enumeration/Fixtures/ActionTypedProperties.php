@@ -5,6 +5,6 @@ namespace Dbalabka\Enumeration\Tests\Fixtures;
 
 trait ActionProperties
 {
-    public static Action $view;
-    public static Action $edit;
+    public static AbstractAction $view;
+    public static AbstractAction $edit;
 }

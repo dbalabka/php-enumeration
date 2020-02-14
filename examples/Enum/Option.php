@@ -11,7 +11,7 @@ use Dbalabka\Enumeration\Enumeration;
  * @author Dmitry Balabka <dmitry.balabka@gmail.com>
  * @template T
  */
-class Option extends Enumeration
+abstract class Option extends Enumeration
 {
     /**
      * @psalm-var Option<mixed>

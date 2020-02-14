@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Dbalabka\StaticConstructorLoader\Tests\Fixtures;
-
 
 use Dbalabka\StaticConstructorLoader\StaticConstructorInterface;
 

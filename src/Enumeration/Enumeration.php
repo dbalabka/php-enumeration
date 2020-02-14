@@ -6,6 +6,7 @@ namespace Dbalabka\Enumeration;
 use Dbalabka\Enumeration\Exception\EnumerationException;
 use Dbalabka\Enumeration\Exception\InvalidArgumentException;
 use Dbalabka\StaticConstructorLoader\StaticConstructorInterface;
+use ReflectionClass;
 use Serializable;
 use function array_search;
 use function get_class_vars;
@@ -31,6 +32,9 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
     /** @var array */
     private static $initializedEnums = [];
 
+    /**
+     * @throws EnumerationException
+     */
     final public static function __constructStatic() : void
     {
         if (self::class === static::class) {
@@ -44,9 +48,23 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
         if (isset(self::$initializedEnums[static::class])) {
             return;
         }
-        self::$initializedEnums[static::class] = true;
+
+        /**
+         * Using reflections we can enforce the strict rules of enums declaration.
+         * It should not rise performance issue because enumeration class initialization executes only once.
+         */
+        $classReflection = new ReflectionClass(static::class);
+        if (!$classReflection->isAbstract() && !$classReflection->isFinal()) {
+            throw new EnumerationException('Enumeration class should be declared as final');
+        }
+        $method = $classReflection->getConstructor();
+        if ($method && $method->isPublic()) {
+            throw new EnumerationException('Enumeration class constructor should not be public');
+        }
+
         static::initializeValues();
         static::initializeOrdinals();
+        self::$initializedEnums[static::class] = true;
     }
 
     final protected static function initializeOrdinals() : void
@@ -63,6 +81,14 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
      */
     protected static function initializeValues() : void
     {
+        /**
+         * TODO: Unfortunately, it is impossible to avoid class reflection here.
+         *       The reflection caching here should not give major performance benefit.
+         *       It should be properly benchmarked.
+         */
+        if ((new ReflectionClass(static::class))->isAbstract()) {
+            return;
+        }
         $firstEnumItem = new static();
 
         $staticVars = static::getEnumStaticVars($firstEnumItem);
@@ -116,6 +142,9 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
     {
     }
 
+    /**
+     * @throws EnumerationException
+     */
     final public function ordinal() : int
     {
         if (null === $this->ordinal) {
@@ -131,9 +160,15 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
                 $ordinal++;
             }
         }
+        if ($this->ordinal === null) {
+            throw new EnumerationException('Ordinal initialization failed. Enum does not contain any static variables');
+        }
         return $this->ordinal;
     }
 
+    /**
+     * @throws EnumerationException
+     */
     final public function compareTo(self $enum) : int
     {
         return $this->ordinal() - $enum->ordinal();
@@ -154,7 +189,7 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
         if (false === $name) {
             throw new EnumerationException(
                 sprintf(
-                    'Can not find $this in $s::values(). ' .
+                    'Can not find $this in %s::values(). ' .
                     'It seems that the static property was overwritten. This is not allowed.',
                     get_class($this)
                 )

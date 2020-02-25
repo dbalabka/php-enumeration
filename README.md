@@ -175,6 +175,7 @@ Action::$view = Action::$edit;
 // Following isn't possible in PHP 7.4 with declared properties types
 Action::$view = null;
 ```
+Also, see most recent [Write-Once Properties](https://wiki.php.net/rfc/write_once_properties) RFC that aimed to address this issue.
 
 ### Class static initialization 
 This implementation relies on class static initialization which was proposed in [Static Class Constructor](https://wiki.php.net/rfc/static_class_constructor).

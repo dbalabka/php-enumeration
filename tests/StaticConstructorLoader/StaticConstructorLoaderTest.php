@@ -3,6 +3,7 @@
 namespace Dbalabka\StaticConstructorLoader\Tests;
 
 use Composer\Autoload\ClassLoader;
+use Dbalabka\StaticConstructorLoader\Tests\Fixtures\ChildOfAbstractEnumeration;
 use Dbalabka\StaticConstructorLoader\Exception\StaticConstructorLoaderException;
 use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
 use Dbalabka\StaticConstructorLoader\Tests\Fixtures\Action;
@@ -10,6 +11,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Constraint\Exception as ConstraintException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Prediction\AggregateException;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @author Dmitrijs Balabka <dmitry.balabka@gmail.com>
@@ -26,19 +28,9 @@ class StaticConstructorLoaderTest extends TestCase
     public static $splAutoloadRegisterCallback;
 
     /**
-     * @var ClassLoader|\Prophecy\Prophecy\ObjectProphecy
+     * @var ClassLoader|ObjectProphecy
      */
     private $classLoader;
-
-    /**
-     * @var array
-     */
-    private $unregisteredAutoloaders = [];
-
-    /**
-     * @var array
-     */
-    private $registeredAutoloaders = [];
 
     private $oldAutoloadFunctions;
 
@@ -132,14 +124,26 @@ class StaticConstructorLoaderTest extends TestCase
         );
     }
 
-    public function testClassLoad()
+    /**
+     * @throws StaticConstructorLoaderException
+     * @dataProvider provideTestClassLoad
+     */
+    public function testClassLoad($class)
     {
         $composerClassLoader = array_filter(spl_autoload_functions(), function ($v) {
             return is_array($v) && $v[0] instanceof ClassLoader;
         })[0][0];
         new StaticConstructorLoader($composerClassLoader);
-        class_exists(Action::class);
-        $this->assertInstanceOf(Action::class, Action::$instance);
+        class_exists($class);
+        $this->assertInstanceOf($class, $class::$instance);
+    }
+
+    public function provideTestClassLoad()
+    {
+        return [
+            'regular class' => [Action::class],
+            'class with abstract class' => [ChildOfAbstractEnumeration::class]
+        ];
     }
 
     public function testNotExistingClassLoad()
@@ -149,6 +153,5 @@ class StaticConstructorLoaderTest extends TestCase
         })[0][0];
         new StaticConstructorLoader($composerClassLoader);
         $this->assertFalse(class_exists('NotExistingClass'));
-
     }
 }

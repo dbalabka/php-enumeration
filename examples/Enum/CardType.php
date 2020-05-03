@@ -7,11 +7,11 @@ use Dbalabka\Enumeration\Enumeration;
 
 final class CardType extends Enumeration
 {
-    /** @var $this */
+    /** @var self */
     public static $amex;
-    /** @var $this */
+    /** @var self */
     public static $visa;
-    /** @var $this */
+    /** @var self */
     public static $masterCard;
 
     protected static function initializeValues() : void

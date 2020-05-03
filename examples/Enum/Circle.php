@@ -5,7 +5,7 @@ namespace Dbalabka\Enumeration\Examples\Enum;
 
 use Dbalabka\Enumeration\Examples\Struct\Point;
 
-class Circle extends Shape
+final class Circle extends Shape
 {
     private Point $point;
     private float $radius;

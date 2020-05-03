@@ -7,16 +7,16 @@ use Dbalabka\Enumeration\Enumeration;
 
 final class Color extends Enumeration
 {
-    /** @var $this */
+    /** @var self */
     public static $red;
-    /** @var $this */
+    /** @var self */
     public static $green;
-    /** @var $this */
+    /** @var self */
     public static $blue;
 
     private $value;
 
-    public function __construct(int $value)
+    protected function __construct(int $value)
     {
         $this->value = $value;
     }

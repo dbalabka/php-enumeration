@@ -5,7 +5,7 @@ namespace Dbalabka\Enumeration\Examples\Enum;
 
 use Dbalabka\Enumeration\Examples\Struct\Point;
 
-class Rectangle extends Shape
+final class Rectangle extends Shape
 {
     private Point $pointA;
     private Point $pointB;

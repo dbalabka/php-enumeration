@@ -11,7 +11,7 @@ if (version_compare(PHP_VERSION, '7.4.0beta', '<')) {
 } else {
     require_once __DIR__ . '/ActionTypedProperties.php';
 }
-final class ActionWithCustomStaticProperty extends Action
+final class ActionWithCustomStaticProperty extends AbstractAction
 {
     use ActionProperties;
 

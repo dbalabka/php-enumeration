@@ -9,7 +9,10 @@ use Dbalabka\Enumeration\Exception\InvalidArgumentException;
 use Dbalabka\Enumeration\Tests\Fixtures\Action;
 use Dbalabka\Enumeration\Tests\Fixtures\ActionWithCustomStaticProperty;
 use Dbalabka\Enumeration\Tests\Fixtures\ActionWithPublicConstructor;
+use Dbalabka\Enumeration\Tests\Fixtures\EmptyEnum;
 use Dbalabka\Enumeration\Tests\Fixtures\Flag;
+use Dbalabka\Enumeration\Tests\Fixtures\NotFinalEnum;
+use Dbalabka\Enumeration\Tests\Fixtures\PublicConstructorEnum;
 use Error;
 use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\TestCase;
@@ -175,7 +178,7 @@ class EnumerationTest extends TestCase
 
     public function testCustomStaticProperties()
     {
-        $this->markTestSkipped('Custom static properties does not allowed');
+        $this->markTestSkipped('Custom static properties are not allowed');
         ActionWithCustomStaticProperty::initialize();
 
         ActionWithCustomStaticProperty::$customProperty = ActionWithCustomStaticProperty::$edit;
@@ -201,5 +204,28 @@ class EnumerationTest extends TestCase
 
         $this->expectException(EnumerationException::class);
         $notOk->name();
+    }
+
+    public function testNotFinalEnumShouldThrowAnException()
+    {
+        $this->expectException(EnumerationException::class);
+        $this->expectExceptionMessage('Enumeration class should be declared as final');
+        NotFinalEnum::initialize();
+        NotFinalEnum::$testValue;
+    }
+
+    public function testPublicConstructorShouldThrowAnException()
+    {
+        $this->expectException(EnumerationException::class);
+        $this->expectExceptionMessage('Enumeration class constructor should not be public');
+        PublicConstructorEnum::initialize();
+        PublicConstructorEnum::$testValue;
+    }
+
+    public function testOrdinalInitilizationFailedShouldThrowException()
+    {
+        $this->expectException(EnumerationException::class);
+        $this->expectExceptionMessage('Ordinal initialization failed. Enum does not contain any static variables');
+        EmptyEnum::initialize();
     }
 }

@@ -187,9 +187,14 @@ provided in this library:
 ```php
 <?php 
 use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
+use Dbalabka\StaticConstructorLoader\DebugStaticConstructorLoader;
 
 $composer = require_once(__DIR__ . '/vendor/autoload.php');
-$loader = new StaticConstructorLoader($composer);
+if ($_ENV['APP_ENV'] === 'dev') { // if running Symfony with dev-mode
+    $loader = new DebugStaticConstructorLoader(new StaticConstructorLoader($composer));
+} else {
+    $loader = new StaticConstructorLoader($composer);
+}
 ``` 
 Also, it would be very helpful to have expression based properties initialization:
 ```php

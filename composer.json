@@ -16,7 +16,8 @@
         "myclabs/php-enum": "^1.0",
         "phpunit/phpunit": "^7.5",
         "phpbench/phpbench": "^0.16.9",
-        "vimeo/psalm": "^3.5"
+        "vimeo/psalm": "^3.5",
+        "symfony/error-handler": "^5.1"
     },
     "autoload": {
         "psr-4": {

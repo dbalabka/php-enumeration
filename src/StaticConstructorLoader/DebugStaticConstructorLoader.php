@@ -146,8 +146,8 @@ class DebugStaticConstructorLoader extends ClassLoader /* extending for an contr
         $path = $this->classLoader->findFile($class);
 
         if (
-            class_exists(\Symfony\Component\ErrorHandler\DebugClassLoader::class, false)
-            || class_exists(\Symfony\Component\Debug\DebugClassLoader::class, false)
+            class_exists('Symfony\Component\ErrorHandler\DebugClassLoader', false)
+            || class_exists('Symfony\Component\Debug\DebugClassLoader', false)
         ) {
             return $this->handleDebugClassLoader($class, $path);
         }
@@ -164,10 +164,7 @@ class DebugStaticConstructorLoader extends ClassLoader /* extending for an contr
             && is_file($path)
             && \in_array(
                 $debugClassLoader['class'] ?? null,
-                [
-                    \Symfony\Component\Debug\DebugClassLoader::class,
-                    \Symfony\Component\ErrorHandler\DebugClassLoader::class
-                ],
+                ['Symfony\Component\Debug\DebugClassLoader', 'Symfony\Component\ErrorHandler\DebugClassLoader'],
                 true
             )
         ) {

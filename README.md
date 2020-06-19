@@ -191,7 +191,7 @@ use Dbalabka\StaticConstructorLoader\StaticConstructorLoader;
 $composer = require_once(__DIR__ . '/vendor/autoload.php');
 $loader = new StaticConstructorLoader($composer);
 ``` 
-Also, it would be very helpful to have expression based properties initialization:
+Also, it would be very helpful to have expression based properties initialization (see [C# example](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/enumeration-classes-over-enum-types)):
 ```php
 class Enum {
     // this is not allowed
@@ -233,24 +233,23 @@ class SomeClass
 See complete example in [examples/serialization_php74.php](examples/serialization_php74.php).
 
 ### Callable static properties syntax
-Unfortunately, you can not simply use static property as callable. There was a 
-[syntax change](https://wiki.php.net/rfc/uniform_variable_syntax#backward_incompatible_changes) since PHP 7.0.
+Unfortunately, it is not easy to use callable that is stored in static property. There was a 
+[syntax change](https://wiki.php.net/rfc/uniform_variable_syntax#backward_incompatible_changes) since PHP 7.0 which complicates the way to call callable.
 ```php
 // Instead of using syntax
 Option::$some('1'); // this line will rise an error "Function name must be a string"
 // you should use 
 (Option::$some)('1');
 ```
-It might be that using static variables isn't best option.
+It is the main disatvatige of static class properties.
   
-Probably the another option is to use magic calls with `__callStatic` but this variant suffers from missing autosuggestion,
-negative performance impact and missing static analysis that might be overcome by additional manually added annotations.
+It can be workarounded by magic calls using `__callStatic` but such option suffers from missing autosuggestion,
+negative performance impact and missing static analysis.
 ```php
 Option::some('1');
 ```
 
-The best option is native PHP implementation. Unfortunately, it might be complicated task. It might seem that a quick solution it would be
-helpful to have late (in runtime) constants initialization or/and expression based class constants initialization:
+It would be helpful to have PHP built-in suppoort for late (in runtime) constants initialization or/and class constants initialization using simple expressions:
 ```php
 class Enum {
    // this is not allowed
@@ -258,8 +257,7 @@ class Enum {
    public const BAR = new Enum();
 }
 ```
-Still, calling `Enum::FOO()` will try to find a method instead of trying to treat constant's value as a callable. 
-So we make a conclusion that enum syntax that use constants will not work but static properties will.  
+Still, calling `Enum::FOO()` will try to find a method instead of trying to treat constant's value as a callable. We assume, that such PHP behavior can be improved.
 
 ## Existing solutions
 Libraries:

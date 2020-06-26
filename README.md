@@ -133,6 +133,8 @@ any static property that isn't an Enum element then you should override the `\Db
 [StaticConstructorLoader](#class-static-initialization) provided in this library to avoid boilerplate code.
 
 ## Usage
+
+### Basic usage
 ```php
 <?php
 use Dbalabka\Enumeration\Examples\Enum\Action;
@@ -154,7 +156,21 @@ foreach (Action::values() as $name => $action) {
 }
 ```
 
-More usage examples:
+### Match expression
+PHP 8 is going to support [match expression](https://wiki.php.net/rfc/match_expression_v2) which simnplifies usage of enums:
+```
+<?php
+use Dbalabka\Enumeration\Examples\Enum\Action;
+
+$action = Action::$view;
+
+echo match ($action) {
+   Action::$view => 'View action',
+   Action::$edit => 'Edit action',
+}
+```
+
+### More usage examples
 * [Static constructor usage](./examples/class_static_construct.php)
 * [Option enum](./examples/day.php) similar to Rust enum
 * [Shape enum](./examples/shape.php) similar to Rust enum

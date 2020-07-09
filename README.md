@@ -157,7 +157,7 @@ foreach (Action::values() as $name => $action) {
 ```
 
 ### Match expression
-PHP 8 is going to support [match expression](https://wiki.php.net/rfc/match_expression_v2) which simnplifies usage of enums:
+PHP 8 is going to support [match expression](https://wiki.php.net/rfc/match_expression_v2) which simplifies usage of enums:
 ```
 <?php
 use Dbalabka\Enumeration\Examples\Enum\Action;

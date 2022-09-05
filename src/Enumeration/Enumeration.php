@@ -212,7 +212,7 @@ abstract class Enumeration implements StaticConstructorInterface, Serializable
         throw new EnumerationException('Enum serialization is not allowed');
     }
 
-    final public function __unserialize()
+    final public function __unserialize($data)
     {
         throw new EnumerationException('Enum unserialization is not allowed');
     }
